@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Chart } from "./Chart";
 import "./styles.css";
 
 function Box({ children, style }) {
@@ -14,9 +15,10 @@ function Box({ children, style }) {
   return <div style={combinedStyle}>{children}</div>;
 }
 
-function ToolbarButton({ children }) {
+function ToolbarButton({ children, ...rest }) {
   return (
     <button
+      {...rest}
       style={{ border: "1px solid lightgray", margin: "3px", width: "26px" }}
     >
       {children}
@@ -24,29 +26,29 @@ function ToolbarButton({ children }) {
   );
 }
 
-function Toolbar1() {
+function Toolbar1({ applyTools }) {
   return (
-    <Box style={{ width: "130px" }}>
-      <ToolbarButton>💹</ToolbarButton>
-      <ToolbarButton>🔢</ToolbarButton>
-      <ToolbarButton>🟤</ToolbarButton>
-      <ToolbarButton>🔸</ToolbarButton>
+    <Box style={{ width: "130px", border: "1px solid lightgray" }}>
+      <ToolbarButton onClick={applyTools}>💹</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🔢</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🟤</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🔸</ToolbarButton>
     </Box>
   );
 }
 
-function Toolbar2() {
+function Toolbar2({ applyTools }) {
   return (
-    <Box style={{ width: "290px" }}>
-      <ToolbarButton>🔲</ToolbarButton>
-      <ToolbarButton>🆖</ToolbarButton>
-      <ToolbarButton>Ⓜ️</ToolbarButton>
-      <ToolbarButton>❇️</ToolbarButton>
-      <ToolbarButton>♨️</ToolbarButton>
-      <ToolbarButton>💠</ToolbarButton>
-      <ToolbarButton>〽️</ToolbarButton>
-      <ToolbarButton>🈁</ToolbarButton>
-      <ToolbarButton>🔵</ToolbarButton>
+    <Box style={{ width: "290px", border: "1px solid lightgray" }}>
+      <ToolbarButton onClick={applyTools}>🔲</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🆖</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>Ⓜ️</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>❇️</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>♨️</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>💠</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>〽️</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🈁</ToolbarButton>
+      <ToolbarButton onClick={applyTools}>🔵</ToolbarButton>
     </Box>
   );
 }
@@ -55,11 +57,11 @@ function Toolbars({ children }) {
   return <div style={{ display: "flex" }}>{children}</div>;
 }
 
-function Thingy() {
+function Thingy({ number }) {
   return (
-    <Box style={{ border: "6px solid green", width: "442px", height: "250px" }}>
-      This is my thingy
-    </Box>
+    <Box
+      style={{ border: "6px solid lightgray", width: "442px", height: "250px" }}
+    ></Box>
   );
 }
 
@@ -68,11 +70,15 @@ function getRandomNumber() {
 }
 
 export default function App() {
-  const [toolbarVisible, setToolbarVisible] = useState(true);
-  const [thingies, setThingies] = useState(0);
+  return <Dashboard />;
+}
 
-  function doSomething() {
-    setThingies(getRandomNumber());
+function Dashboard() {
+  const [toolbarVisible, setToolbarVisible] = useState(true);
+  const [data, setData] = useState(() => getRandomNumber());
+
+  function applyTools() {
+    setData(getRandomNumber());
   }
 
   return (
@@ -83,12 +89,12 @@ export default function App() {
 
       {toolbarVisible ? (
         <Toolbars>
-          <Toolbar1 />
-          <Toolbar2 />
+          <Toolbar1 applyTools={applyTools} />
+          <Toolbar2 applyTools={applyTools} />
         </Toolbars>
       ) : null}
 
-      <Thingy number={thingies} />
+      <Chart data={data} />
     </div>
   );
 }
