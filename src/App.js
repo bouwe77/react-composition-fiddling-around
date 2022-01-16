@@ -94,7 +94,7 @@ function Dashboard() {
         </Toolbars>
       ) : null}
 
-      <Chart data={data} />
+      <Chart input={data} />
     </div>
   );
 }

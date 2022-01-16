@@ -30,22 +30,37 @@ export const defaultData = {
 };
 
 function getRandomData() {
+  //console.log(defaultData);
   const randomData = Array.from({ length: 6 }, () =>
     Math.floor(Math.random() * 20)
   );
 
   const newData = { ...defaultData };
-  newData.datasets[0].data = randomData;
+  newData.datasets[0] = { ...newData.datasets[0], data: randomData };
+
+  console.log(newData.datasets[0].data);
 
   return newData;
 }
 
-export function Chart({ number }) {
-  const [data, setData] = useState(defaultData);
+export function Chart({ input }) {
+  const [data, setData] = useState(() => getRandomData());
 
   useEffect(() => {
     setData(getRandomData());
-  }, [number]);
+  }, [input]);
 
-  return <PolarArea data={data} />;
+  useEffect(() => {
+    console.log("data has changed...");
+  }, [data]);
+
+  useEffect(() => {
+    console.log("rerender...");
+  });
+
+  return (
+    <>
+      <PolarArea redraw={true} data={data} />
+    </>
+  );
 }
